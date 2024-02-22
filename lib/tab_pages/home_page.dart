@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uber_driver_app/main.dart';
+import 'package:uber_driver_app/static/config.dart';
 
 class HomeTabPage extends StatelessWidget {
   HomeTabPage({super.key});
@@ -79,12 +83,15 @@ class HomeTabPage extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                           (states) => Colors.green),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      makeDriverOnlineNow();
+                      getLocationLiveUpdates();
+                    },
                     child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Online Now  ",
+                            "Offline Now - Go Online ",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -100,5 +107,31 @@ class HomeTabPage extends StatelessWidget {
         ),
       )
     ]);
+  }
+
+  void makeDriverOnlineNow() async {
+    if (currentfirebaseUser != null) {
+      log("##### Current Firebase Not Null #######");
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      currentPosition = position;
+      Geofire.initialize("availableDrivers");
+      Geofire.setLocation(currentfirebaseUser!.uid, currentPosition!.latitude,
+          currentPosition!.longitude);
+
+      rideRequestRef.onValue.listen((event) {});
+    } else {
+      log("##### Current Firebase Is Null #######");
+    }
+  }
+
+  void getLocationLiveUpdates() {
+    homeTabPagestreamSubscription =
+        Geolocator.getPositionStream().listen((Position position) {
+      Geofire.setLocation(
+          currentfirebaseUser!.uid, position.latitude, position.longitude);
+      LatLng latlng = LatLng(position.latitude, position.longitude);
+      newGoogleMapController!.animateCamera(CameraUpdate.newLatLng(latlng));
+    });
   }
 }
