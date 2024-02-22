@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uber_driver_app/main.dart';
+import 'package:uber_driver_app/notifications/push_notification_service.dart';
 import 'package:uber_driver_app/static/config.dart';
 
 class HomeTabPage extends StatefulWidget {
@@ -34,6 +36,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   bool isDriverAvailable = false;
 
+  @override
+  void initState() {
+    super.initState();
+    getCurrentDriverInfo();
+  }
+
   void locatePosition() async {
     // Check if permission is granted
     var permissionStatus = await Permission.location.request();
@@ -60,6 +68,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
       // Handle case where permission is denied
       Fluttertoast.showToast(msg: "Location permission denied");
     }
+  }
+
+  void getCurrentDriverInfo() async {
+    currentfirebaseUser = FirebaseAuth.instance.currentUser;
+    PushNotificationService pushNotificationService = PushNotificationService();
+    pushNotificationService.initialize();
+    pushNotificationService.getToken();
   }
 
   @override
