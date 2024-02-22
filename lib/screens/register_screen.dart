@@ -7,7 +7,6 @@ import 'package:uber_driver_app/static/config.dart';
 import '../main.dart';
 import '../widgets/progress_dialog.dart';
 import 'login_screen.dart';
-import 'main_screen.dart';
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {

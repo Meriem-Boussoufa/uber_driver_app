@@ -4,6 +4,7 @@ import 'package:uber_driver_app/main.dart';
 import 'package:uber_driver_app/screens/main_screen.dart';
 import 'package:uber_driver_app/static/config.dart';
 
+// ignore: must_be_immutable
 class CarInfoScreen extends StatelessWidget {
   static const String idScreen = "carinfo";
 

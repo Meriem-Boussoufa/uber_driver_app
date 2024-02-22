@@ -10,7 +10,7 @@ import 'package:uber_driver_app/main.dart';
 import 'package:uber_driver_app/static/config.dart';
 
 class HomeTabPage extends StatefulWidget {
-  HomeTabPage({super.key});
+  const HomeTabPage({super.key});
 
   static const CameraPosition _kGooglePlex = CameraPosition(
       target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
