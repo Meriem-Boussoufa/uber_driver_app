@@ -1,12 +1,62 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeTabPage extends StatelessWidget {
-  const HomeTabPage({super.key});
+  HomeTabPage({super.key});
+
+  final Completer<GoogleMapController> controllerGoogleMap = Completer();
+  GoogleMapController? newGoogleMapController;
+  static const CameraPosition _kGooglePlex = CameraPosition(
+      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
+
+  Position? currentPosition;
+  var geoLocator = Geolocator();
+
+  void locatePosition() async {
+    // Check if permission is granted
+    var permissionStatus = await Permission.location.request();
+
+    if (permissionStatus.isGranted) {
+      try {
+        // Attempt to get current position
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        currentPosition = position;
+        LatLng latLatPosition = LatLng(position.latitude, position.longitude);
+        CameraPosition cameraPosition =
+            CameraPosition(target: latLatPosition, zoom: 14);
+        newGoogleMapController!
+            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        // String address =
+        //     // ignore: use_build_context_synchronously
+        //     await AssistantMethods.searchCoordinateAddress(position, context);
+        // log("This is your Address :: $address");
+      } catch (e) {
+        Fluttertoast.showToast(msg: "Error getting location: $e");
+      }
+    } else {
+      // Handle case where permission is denied
+      Fluttertoast.showToast(msg: "Location permission denied");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("This is Home Tab Page"),
-    );
+    return Stack(children: [
+      GoogleMap(
+        myLocationButtonEnabled: true,
+        mapType: MapType.normal,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          controllerGoogleMap.complete(controller);
+          newGoogleMapController = controller;
+          locatePosition();
+        },
+      ),
+    ]);
   }
 }
