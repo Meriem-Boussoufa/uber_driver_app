@@ -1,7 +1,9 @@
 # uber_driver_app
 
 ### Features
+
 User Authentication: Users can sign up and log in to the app to access its functionalities.
+
 Map View: Displays a map using Google Maps API, showing the user's current location and nearby landmarks.
 
 ### Installation
