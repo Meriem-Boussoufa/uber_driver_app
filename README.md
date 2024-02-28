@@ -20,7 +20,7 @@ Map View: Displays a map using Google Maps API, showing the user's current locat
     
     - For iOS, add the API key to ios/Runner/AppDelegate.swift: GMSServices.provideAPIKey("YOUR_IOS_API_KEY")
     
-    - Check: https://pub.dev/packages/google_maps_flutter
+Check: https://pub.dev/packages/google_maps_flutter
 
 ### Configuration
 
