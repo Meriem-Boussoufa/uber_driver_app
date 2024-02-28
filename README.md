@@ -15,15 +15,21 @@ Map View: Displays a map using Google Maps API, showing the user's current locat
 4- Ensure you have Google Maps API keys for both Android and iOS platforms.
 
 5- Add your Google Maps API keys to the appropriate files:
-    - For Android, add the API key to android/app/src/main/AndroidManifest.xml: <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_ANDROID_API_KEY"/>, 
+
+    - For Android, add the API key to android/app/src/main/AndroidManifest.xml: <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_ANDROID_API_KEY"/>
+    
     - For iOS, add the API key to ios/Runner/AppDelegate.swift: GMSServices.provideAPIKey("YOUR_IOS_API_KEY")
+    
     - Check: https://pub.dev/packages/google_maps_flutter
 
 ### Configuration
 
 Firebase: This app uses Firebase for user authentication and real-time updates. Configure your Firebase project and add the necessary configuration files to the project.
+
     - https://console.firebase.google.com
+    
 Google Maps API: Obtain API keys for Google Maps for both Android and iOS platforms and add them to the project as mentioned in the installation steps.
+
     - https://developers.google.com/maps/documentation/geocoding/requests-geocoding
 
 ### ScreenShoots
